@@ -54,7 +54,7 @@ pro bp_run_correlation, A, $
 
     ; Loop through every pixel
     for j = 0, n-1 do begin
-        
+
         ; Loop through every other pixel in entire 2D array
         for y = 0, h-1 do begin
         for x = 0, w-1 do begin
@@ -68,25 +68,43 @@ pro bp_run_correlation, A, $
             ;plot, tau, allcor
 
         endfor
-        endfor 
+        endfor
 
     endfor
-
 
     ;; Append cc and tt arrays to structure (A[i])
     ;struc = create_struct( struc, 'coos', [[x0], [y0]], 'cc', cc_cube, 'tt', tt_cube, 'radius', rr_cube )
     temp = create_struct( A[i], 'coos', [[x0], [y0]], 'cc', cc_cube, 'tt', tt_cube, 'radius', rr_cube )
     struc2 = [ struc2, temp ]
 
-    if keyword_set(sav) then begin
+    if keyword_set(sav) then $
         save, xc, yc, max_cc, max_tt, filename = path + 'cc_' + w + '.sav'
-    endif
 
     print, "time: ", systime(/seconds) - t1
-    ;---------------------------------------------------------------------------------------
+
     endfor
-    
+
+    ;A = create_struct( A, 'new_tag', new_value )
     A = struc2
 
 STOP
 end
+
+
+
+    if keyword_set(corr) then begin
+        resolve_routine, "bp_run_correlation", /either
+        bp_run_correlation, A, sav=0
+
+;        A2 = []
+;        for i = 0, n_elements(A)-1 do begin
+;            t1 = systime(/seconds)
+;            s = A[i]
+;            bp_run_correlation, s, sav=0
+;            A2 = [ A2, s ]  ;; Slow...
+;            print, "time: ", systime(/seconds) - t1
+;        endfor
+;        A = A2
+    endif
+
+

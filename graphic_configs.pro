@@ -2,9 +2,12 @@
 ; Last modified:    Wed 10 Mar 2017
 ; Programmer:       Laurel Farris
 ; Description:      General configurations that apply to all graphics
+;                   Need to intialize more properties to defaults so they
+;                       can be changed easily!
 
 
-pro graphic_configs, cbar_properties, graphic_properties, image_properties
+pro graphic_configs, $
+    cbar_properties, image_properties, scatterplot_properties
 
 
     fontsize = 7
@@ -24,23 +27,41 @@ pro graphic_configs, cbar_properties, graphic_properties, image_properties
         minor       : 0, $
         range       : [0.0, 0.0], $
         tickformat  : "", $
-        title       : "" }
+        title       : "" $
+        }
 
     ;; Properties for any graphic (images and plots)
-    graphic_properties = { $
-        current    : 1, $
-        device     : 0, $
-        axis_style : 2, $
-        xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
-        ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
-        font_size  : fontsize+1 }
 
     ;; Image properties
     image_properties = { $
+        current    : 1, $
+        device     : 0, $
+        title      : "", $
+        rgb_table  : 0, $
+        axis_style : 2, $
+        xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
+        ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
+        font_size  : fontsize+1 $
         min_value : 0.0, $
         max_value : 0.0, $
         xtitle : 'x [pixels]', $
-        ytitle : 'y [pixels]' }
+        ytitle : 'y [pixels]' $
+        }
+
+    ;; Plot properties
+    scatterplot_properties = { $
+        current    : 1, $
+        device     : 0, $
+        title      : "", $
+        axis_style : 2, $
+        xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
+        ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
+        font_size  : fontsize+1 $
+        symbol : 'dot', $
+        sym_filled : 1, $
+        sym_size : 1.0 $
+        }
+
 
 
 end
