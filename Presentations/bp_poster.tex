@@ -2,56 +2,40 @@
 \usepackage[orientation=landscape,size=custom,width=115,height=100,scale=1]{beamerposter}
 \usepackage{lmodern} % Font style
 \usepackage{ragged2e} % For using \justify
-\usepackage{verbatim}
-
-\usepackage{textpos} % Divide poster into columns and sections (relative or absolute positions)
-%\usepackage[absolute,overlay]{textpos} ??
-\usepackage[absolute]{textpos}
-
-\usepackage{tikz}
-\usepackage{fancybox}
-\usepackage{tcolorbox}
-\usepackage{multirow}
-\usepackage{booktabs}
+\usepackage{url}
 \usepackage{graphicx}
 \usepackage{caption}
 
-\setbeamerfont{frametitle}{size=\Huge,series=\bfseries}
-\setbeamerfont{framesubtitle}{size=\huge}
-\setbeamerfont{block title}{size=\large,series=\bfseries}
-\setbeamerfont{block body}{size=\normalsize}
-\setbeamerfont{caption}{size=\small}
+% texpos package divides poster into columns and sections (relative or absolute positions)
+%\usepackage[absolute,overlay]{textpos} ??
+\usepackage[absolute, overlay]{textpos}
 
-\addtobeamertemplate{frametitle}{\vspace*{5cm}}{\vspace*{5cm}}
-\addtobeamertemplate{block begin}{\vspace*{40pt}}{}
 
-\setbeamertemplate{frametitle}[default][center]
-\setbeamertemplate{caption}[numbered]
-\setbeamertemplate{itemize items}{$\circ$}
-
+% Colors, fonts, et.
 \definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
-\definecolor{arsenic}{rgb}{0.23, 0.27, 0.29}
-\definecolor{mycyan}{rgb}{0.0, 0.55, 0.55}
-\definecolor{mygray}{rgb}{0.23, 0.27, 0.29}
-\definecolor{myblue}{rgb}{0.16, 0.32, 0.75}
-\definecolor{mygreen}{rgb}{0.05, 0.5, 0.06}
-\definecolor{mypurple}{rgb}{0.45, 0.31, 0.59}
-\definecolor{myred}{rgb}{0.82, 0.1, 0.26}
 
-% Can set these within document as well
+% Whole frame
 \setbeamercolor{background canvas}{bg=burgundy}
-\setbeamercolor{frametitle}{fg=white}
-\setbeamercolor{framesubtitle}{fg=white}
-\setbeamercolor{block title}{fg=myblue}
+
+% Blocks
+\setbeamerfont{block title}{size=\large,series=\bfseries}
+\setbeamercolor{block title}{fg=white}
+\setbeamerfont{block body}{size=\normalsize}
 \setbeamercolor{block body}{bg=white, fg=black}
+
+% Normal text
 \setbeamercolor{normal text}{fg=black}
-\setbeamercolor{description item}{fg=myblue}
-\setbeamercolor{enumerate item}{fg=myblue}
-\setbeamercolor{caption name}{fg=myblue}
 
-\setbeamercolor{textblock}{fg=white,bg=white} % ??
+% Captions
+\setbeamertemplate{caption}[numbered]
+\setbeamerfont{caption}{size=\small}
+\setbeamercolor{caption name}{fg=black}
 
-\setbeamersize{text margin left=3cm,text margin right=3cm}
+\setbeamertemplate{itemize items}{$\circ$}
+\setbeamercolor{description item}{fg=black}
+\setbeamercolor{enumerate item}{fg=black}
+
+%\setbeamersize{text margin left=3cm,text margin right=3cm}
 
 % Different colors for lightcurve plot, increase font size too
 % Print copies of poster?
@@ -59,14 +43,56 @@
 % Linkedin, my info, resume, etc.
 % Add twitter, facebook, github, whatev. to poster itself
 
-\usepackage{hyperref}
+%\addtobeamertemplate{block begin}{\large\textbf{\thesection. } }
+%\addtobeamertemplate{block begin}{\vspace*{40pt}}{}
+
+\title{\Huge\textcolor{white}{
+    Determining the size of coronal bright points using
+    cross-correlation techniques and data from AIA/\textit{SDO}}}
+\author{\huge\textcolor{white}{Laurel Farris, R. T. James McAteer}}
+\date{}
 
 \begin{document}
 
-\begin{block}{Introduction}
-    Coronal BPs are seen ubiquitously in the solar atmosphere at several
-    EUV and X-ray bandpasses.
-\end{block}
+\begin{frame}[t]{}
+    \maketitle
+    \vfill
+    \begin{columns}[t]
+        \column{0.3\textwidth}
+        \section{}
+        \begin{block}{\thesection. Introduction}
+            Coronal BPs are seen ubiquitously in the solar atmosphere at several
+            EUV and X-ray bandpasses.
+        \end{block}
 
+        \column{0.3\textwidth}
+        \section{}
+        \begin{block}{\thesection. Data}
+            Here is my data.
+        \end{block}
 
+        \section{}
+        \begin{block}{\thesection. Cross-correlation}
+            Text.
+        \end{block}
+
+        \column{0.3\textwidth}
+
+        \section{}
+        \begin{block}{\thesection. Results}
+            Here are my results. Here are my results.
+            Here are my results. Here are my results.
+            Here are my results. Here are my results.
+        \end{block}
+
+        \section{}
+        \begin{block}{\thesection. Conclusions}
+        \end{block}
+
+        \begin{block}{References}
+        \end{block}
+
+    \end{columns}
+
+\end{frame}
 \end{document}
