@@ -1,0 +1,4 @@
+\beamer@endinputifotherversion {3.06pt}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Maths}{5}{0}{2}
+\beamer@sectionintoc {3}{More}{7}{1}{3}

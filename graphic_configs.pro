@@ -1,19 +1,18 @@
 ; Filename:         graphic_configs.pro
 ; Last modified:    Wed 10 Mar 2017
 ; Programmer:       Laurel Farris
-; Description:      General configurations that apply to all graphics
-;                   Need to intialize more properties to defaults so they
-;                       can be changed easily!
+; Description:      General configurations that apply to all graphics.
+;                       Call once to define common block, then shouldn't have to call again.
 
 
-pro graphic_configs, $
-    cbar_properties, image_properties, scatterplot_properties
+pro graphic_configs
 
+    COMMON graphic_block, cbar_props, image_props, scatter_props
 
     fontsize = 7
 
     ;; Colorbar properties
-    cbar_properties = { $
+    cbar_props = { $
         orientation : 1, $
         device      : 0, $
         position    : [0.0, 0.0, 0.0, 0.0], $
@@ -33,23 +32,21 @@ pro graphic_configs, $
     ;; Properties for any graphic (images and plots)
 
     ;; Image properties
-    image_properties = { $
+    image_props = { $
         current    : 1, $
         device     : 0, $
         title      : "", $
-        rgb_table  : 0, $
+        rgb_table  : intarr(256,3), $
         axis_style : 2, $
         xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
         font_size  : fontsize+1 $
         min_value : 0.0, $
-        max_value : 0.0, $
-        xtitle : 'x [pixels]', $
-        ytitle : 'y [pixels]' $
+        max_value : 0.0 $
         }
 
     ;; Plot properties
-    scatterplot_properties = { $
+    scatter_props = { $
         current    : 1, $
         device     : 0, $
         title      : "", $

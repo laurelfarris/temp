@@ -1,0 +1,72 @@
+\documentclass[t]{beamer}
+\usepackage[orientation=landscape,size=custom,width=115,height=100,scale=1]{beamerposter}
+\usepackage{lmodern} % Font style
+\usepackage{ragged2e} % For using \justify
+\usepackage{verbatim}
+
+\usepackage{textpos} % Divide poster into columns and sections (relative or absolute positions)
+%\usepackage[absolute,overlay]{textpos} ??
+\usepackage[absolute]{textpos}
+
+\usepackage{tikz}
+\usepackage{fancybox}
+\usepackage{tcolorbox}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+
+\setbeamerfont{frametitle}{size=\Huge,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\huge}
+\setbeamerfont{block title}{size=\large,series=\bfseries}
+\setbeamerfont{block body}{size=\normalsize}
+\setbeamerfont{caption}{size=\small}
+
+\addtobeamertemplate{frametitle}{\vspace*{5cm}}{\vspace*{5cm}}
+\addtobeamertemplate{block begin}{\vspace*{40pt}}{}
+
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{itemize items}{$\circ$}
+
+\definecolor{burgundy}{rgb}{0.5, 0.0, 0.13}
+\definecolor{arsenic}{rgb}{0.23, 0.27, 0.29}
+\definecolor{mycyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{mygray}{rgb}{0.23, 0.27, 0.29}
+\definecolor{myblue}{rgb}{0.16, 0.32, 0.75}
+\definecolor{mygreen}{rgb}{0.05, 0.5, 0.06}
+\definecolor{mypurple}{rgb}{0.45, 0.31, 0.59}
+\definecolor{myred}{rgb}{0.82, 0.1, 0.26}
+
+% Can set these within document as well
+\setbeamercolor{background canvas}{bg=burgundy}
+\setbeamercolor{frametitle}{fg=white}
+\setbeamercolor{framesubtitle}{fg=white}
+\setbeamercolor{block title}{fg=myblue}
+\setbeamercolor{block body}{bg=white, fg=black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{description item}{fg=myblue}
+\setbeamercolor{enumerate item}{fg=myblue}
+\setbeamercolor{caption name}{fg=myblue}
+
+\setbeamercolor{textblock}{fg=white,bg=white} % ??
+
+\setbeamersize{text margin left=3cm,text margin right=3cm}
+
+% Different colors for lightcurve plot, increase font size too
+% Print copies of poster?
+% Print abstract?
+% Linkedin, my info, resume, etc.
+% Add twitter, facebook, github, whatev. to poster itself
+
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{block}{Introduction}
+    Coronal BPs are seen ubiquitously in the solar atmosphere at several
+    EUV and X-ray bandpasses.
+\end{block}
+
+
+\end{document}
