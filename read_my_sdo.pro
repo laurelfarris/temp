@@ -11,6 +11,10 @@ pro READ_MY_SDO, index, data, wave
 
     COMMON bp_block
 
+    x = x_length
+    y = y_length
+    z = z_length
+
     ;; Read in header info
     fls = ( file_search( path + "*" + wave + "A*.fits" ) )[0:z-1]
     READ_SDO, fls, index, cube, nodata=1

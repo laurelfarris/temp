@@ -4,12 +4,18 @@
 ; Description:      Create structures
 
 
-function STRUCTURES
+pro bp_structures
 
 ;    ;; Tags for each bandpass structure
 ;    ;tags = "w" + waves[*]
 
+    resolve_routine, "read_my_sdo", /either
+
     COMMON bp_block
+
+    x = x_length
+    y = y_length
+    z = z_length
 
     ;; initialize structures (one for each bandpass)
     substruc = { $
@@ -27,6 +33,8 @@ function STRUCTURES
     ;; Restore data and read headers
     foreach wave, waves, i do begin
 
+        ;; Uses read_sdo to get header info and restores data.
+
         READ_MY_SDO, index, data, wave
 
         minutes = float( strmid( index.date_obs, 14, 2 ) )
@@ -41,5 +49,4 @@ function STRUCTURES
 
     endforeach
 
-    return, A
 end

@@ -7,21 +7,18 @@
 ;                       be passed to actual graphing routine.
 
 
-pro BP_GRAPHICS, A, data, blah
+pro BP_GRAPHICS, data, blah
 
+    create_common_vars
+    COMMON bp_block
+    COMMON timelag_block
     
     resolve_routine, "color_tables", /either
     resolve_routine, "graphic_configs", /either
     GRAPHIC_CONFIGS, cbar_props, props
 
-    props.xtitle = "x [pixels]"
-    props.ytitle = "y [pixels]"
-    cbar_props.position = [0.87, 0.03, 0.90, 0.97 ]
-
-    threshold = 0.5
 
     case blah of
-
 
         ;;  Images
         "im" : begin
@@ -65,6 +62,11 @@ pro BP_GRAPHICS, A, data, blah
 
     endcase
 
+
+    ;; Properties for all images
+    props.xtitle = "x [pixels]"
+    props.ytitle = "y [pixels]"
+    cbar_props.position = [0.87, 0.03, 0.90, 0.97 ]
     
 
     ;; Window
