@@ -1,8 +1,21 @@
-; Last modified:    Wed Mar 29
+; Last modified:    Wed Apr 05
 ; Programmer:       Laurel Farris
 ; Filename:         bp.pro
 ; Subroutines:
 ; Description:      Main program to run bp procedures.
+
+
+function my_func, old_step
+    step = ''
+    read, step, prompt="Enter step (" + strtrim(old_step,1) + "): "
+    steps = ["Call common", "Read fits", "Align", "Timelag", "Graphics"]
+    decision = ''
+    read, decision, prompt=steps[step-1] + " (y/n)? "
+    if decision ne "y" then begin
+        print, "Retall, and start over."
+        STOP
+    endif else return, fix(step)
+    end
 
 
 pro create_common_vars
@@ -13,58 +26,69 @@ pro create_common_vars
     temps = ['6.8', '5.6, 7.0', '5.8', '6.2, 7.3', '6.3', '4.7']
     x_ref = 339 ;1300
     y_ref = 834 ;2300
-    x = 100 ;1000
-    y = 100 ;1000
+    x = 80 ;1000
+    y = 80 ;1000
     z = 300
     end
 
 
-
-;pro bp_routine, A, steps=steps
-foreach step, steps do begin
-    case step of
-    ; Create array of structures, one for each wavelength in 'waves'
-        1 : create_common_vars
-        2 : begin
-                resolve_routine, "structures", /either
-                resolve_routine, "read_my_sdo", /either
-                A = STRUCTURES()
-            end
-        3 : print, "alignment placeholder"
-        4 : begin
-                ;resolve_routine, "bp_timelag", /either
-                x_refs = [50, 49, 51, 50, 50, 49, 51, 49, 51]
-                y_refs = [50, 50, 50, 49, 51, 49, 49, 51, 51]
-                refs = []
-                for i = 0, n_elements(x_refs)-1 do $
-                    refs = [ [refs], [x_refs[i], y_refs[i]] ]
-                STOP
-                c1 = BP_TIMELAG( A[3].data, refs=refs[0:3], threshold=0.5 )
-                c2 = BP_TIMELAG( A[3].data, refs=refs[4:*], threshold=0.5 )
-                c = mean( [ [[c1]], [[c2]] ], dimension=3 )
-            end
-        5 : begin
-                ;; Compile and call prodecdure to get graphic properties to apply during creation.
-                resolve_routine, "graphic_configs", /either
-                GRAPHIC_CONFIGS  ;; cbar_properties, image_properties, scatter_properties
-                
-                resolve_routine, "bp_prep_graphics", /either
-                resolve_routine, "bp_make_graphics", /either
-
-            end
-    endcase
-endforeach
+if (step eq !NULL) then oldstep = 1 else old_step = step
+step = my_func(old_step)
 
 
-; PROBLEM: After error, get stuck in routine and this statement doesn't execute.
-steps = !NULL
+case step of
+; Create array of structures, one for each wavelength in 'waves'
+    1 : create_common_vars
+    2 : begin
+            resolve_routine, "structures", /either
+            resolve_routine, "read_my_sdo", /either
+            A = STRUCTURES()
+        end
+    3 : print, "alignment routine goes here... maybe"
+    4 : begin
 
-; Run cross-correlations and create new structure for each wavelegth
-;   (this way can run timelag on a single wavelength if desired... can take a long time).
-;c94 = BP_TIMELAG( A[0].data )
-;c131 = BP_TIMELAG( A[1].data )
-;c171 = BP_TIMELAG( A[3].data )
-;c193 = BP_TIMELAG( A[3].data )
-;c211 = BP_TIMELAG( A[4].data )
-;c304 = BP_TIMELAG( A[5].data )
+        resolve_routine, "bp_timelag", /either
+        x_refs = [50, 49, 51, 50, 50, 49, 51, 49, 51]
+        y_refs = [50, 50, 50, 49, 51, 49, 49, 51, 51]
+        refs = []
+        for i = 0, n_elements(x_refs)-1 do $
+            refs = [ [refs], [x_refs[i], y_refs[i]] ]
+        refs = refs - 10
+
+        cc = []
+        for i = 0, n_elements(A)-1 do begin
+            BP_TIMELAG, A[i].data, refs, 0.5, cc, tt
+            cc_avg = mean( cc_cube, dimension=3 )
+            cc = [ [[cc]], [[cc_avg]] ]
+        endfor
+        cc_norm = cc/max(cc)
+
+        BP_TIMELAG, A[0].data, refs, 0.5, cc94, tt94
+        cc_avg94 =  mean( cc94, dimension=3 )
+        BP_TIMELAG, A[1].data, refs, 0.5, cc131, tt131
+        cc_avg131 =  mean( cc131, dimension=3 )
+        BP_TIMELAG, A[2].data, refs, 0.5, cc171, tt171
+        cc_avg171 =  mean( cc171, dimension=3 )
+        BP_TIMELAG, A[3].data, refs, 0.5, cc193, tt193
+        cc_avg193 =  mean( cc193, dimension=3 )
+        BP_TIMELAG, A[4].data, refs, 0.5, cc211, tt211
+        cc_avg211 =  mean( cc211, dimension=3 )
+        BP_TIMELAG, A[5].data, refs, 0.5, cc304, tt304
+        cc_avg304 =  mean( cc304, dimension=3 )
+
+        cc_block = [ $
+            [[cc_avg94]], $
+            [[cc_avg131]], $
+            [[cc_avg171]], $
+            [[cc_avg193]], $
+            [[cc_avg211]], $
+            [[cc_avg304]] ]
+
+        end
+    5 : begin
+        resolve_routine, "bp_graphics", /either
+        BP_GRAPHICS, A, cc_block, "cc"
+        end
+
+endcase
 end

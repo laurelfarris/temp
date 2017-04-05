@@ -23,10 +23,12 @@ function color_tables, desired_colors
     in = [075,000,130]
 
 
-    s = { cc_colors    : colortable( [[wh], [rd], [og], [ye], [gr], [bl], [pr]]), $
-          cc_grayscale : colortable( [[wh], [bk]] ), $
-          tt_colors    : colortable( [[wh],[rd],[ye],[bl],[wh]], $
-                            indices=[0,1,128,254,255], stretch=[0,10,-10,0] ) $
+    s = { $
+        im_colors    : colortable( [[bk], [wh]]), $
+        cc_colors    : colortable( [[wh], [rd], [og], [ye], [gr], [bl], [pr]]), $
+        cc_grayscale : colortable( [[wh], [bk]] ), $
+        tt_colors    : colortable( [[wh],[rd],[ye],[bl],[wh]], $
+                        indices=[0,1,128,254,255], stretch=[0,10,-10,0] ) $
         }
 
     tags = tag_names(s)
