@@ -45,8 +45,8 @@ end
 
 resolve_routine, "bp_structures", /either
 
-;foreach step, steps do begin
 read, step, prompt="Step (" + strtrim(step,1) + "): "
+;if (input eq '') then input = step else step = input
 step = fix(step)
 
 case step of
@@ -60,7 +60,7 @@ case step of
         end
     5 : begin 
         resolve_routine, "bp_graphics", /either
-        BP_GRAPHICS, A[2:*], "cc";, blah="cc", blah="tt"
+        BP_GRAPHICS, A[2:*], "im";, blah="cc", blah="tt"
         end
 
     ;6 : bp_plots

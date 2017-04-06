@@ -16,6 +16,8 @@ pro BP_GRAPHICS, A, blah
     resolve_routine, "graphic_configs", /either
     GRAPHIC_CONFIGS, cbar_props, props
 
+    text_props = { color : "black" }
+
 
     case blah of
 
@@ -29,6 +31,7 @@ pro BP_GRAPHICS, A, blah
             cbar_props.range = [props.min_value, props.max_value]
             cbar_props.title = "intensity [counts, arbitrary]"
             make_cbar = 0
+            text_props.color = "white"
             print, "returning images"
             end
 
@@ -51,7 +54,7 @@ pro BP_GRAPHICS, A, blah
         "tt" : begin
             data = A.tt
             ;; Cut off timelag for cc values less than threshold
-            ;data[ where( A.cc[*,*,0,*] lt threshold ) ] = -10000.0
+            data[ where( A.cc lt threshold ) ] = -10000.0
             props.rgb_table = color_tables( "TT_COLORS" )
             ;props.min_value = round( min(A.tt))
             props.min_value = -150
@@ -66,11 +69,6 @@ pro BP_GRAPHICS, A, blah
     endcase
 
 
-    ;; Properties for all images
-    props.xtitle = "x [pixels]"
-    props.ytitle = "y [pixels]"
-    cbar_props.position = [0.87, 0.03, 0.90, 0.97 ]
-
     ;; Window
     wx = 700
     wy = 640
@@ -81,17 +79,39 @@ pro BP_GRAPHICS, A, blah
     n = (size(data, /dimensions))[2]
     im = objarr(n)
 
+    pos = []
+    letter = ["(a)", "(b)", "(c)", "(d)"]
     for i=0, n-1 do begin
-        props.title = "$\lambda$="+A[i].wavelength+" $\AA$; log(T)="+A[i].temperature+"K"
+        ;props.title = "$\lambda$="+A[i].wavelength+" $\AA$; log(T)="+A[i].temperature+"K"
         im[i] = image( data[*,*,i], $
             layout = [2,2,i+1], $
-            margin = 0.1, $
+            margin = [0.11,0.11,0.10,0.09], $
+            image_dimensions = [48, 48], $
             _EXTRA = props )
-        if i mod 2 eq 1 then im[i].position = im[i].position - [0.08, 0, 0.08, 0]
+        if i mod 2 eq 1 then begin
+            im[i].ytitle = ""
+            im[i].position = im[i].position - [0.08, 0, 0.08, 0]
+        endif
+        pos = [ [pos], [im[i].position] ] 
+        text = TEXT( pos[0,i]+0.01, pos[3,i]-0.04, letter[i], _EXTRA=text_props)
     endfor
 
+    im[2].xtitle = "x [arcsec]"
+    im[3].xtitle = "x [arcsec]"
+    im[0].ytitle = "y [arcsec]"
+    im[2].ytitle = "y [arcsec]"
+
+
+    pos1 = im[-1].position
+    pos2 = im[1].position
+    ;cbar_props.position = [0.87, 0.03, 0.90, 0.97 ]
+    cx1 = pos1[2] + 0.02
+    cy1 = pos1[1]
+    cx2 = cx1 + 0.03
+    cy2 = pos2[3]
+    cbar_props.position = [ cx1, cy1, cx2, cy2]
     ;; Colorbar
     if make_cbar then cbar = colorbar( _EXTRA = cbar_props )
 
-
+STOP
 END;;

@@ -8,7 +8,7 @@
 pro GRAPHIC_CONFIGS, $
     cbar_props, image_props, scatter_props
 
-    fontsize = 7
+    fontsize = 10
 
     ;; Colorbar properties
     cbar_props = { $
