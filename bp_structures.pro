@@ -1,21 +1,17 @@
-; Last modified:    Mon Mar 20 15:41:06 EDT 2017
+; Last modified:    06 April 2017
 ; Filename:         bp_structures.pro
 ; Programmer:       Laurel Farris
-; Description:      Create structures
+; Description:      Read/restore data and headers, and create array of structures,
+;                       one for each bandpass.
 
 
-pro bp_structures
+function bp_structures
 
-;    ;; Tags for each bandpass structure
-;    ;tags = "w" + waves[*]
-
-    resolve_routine, "read_my_sdo", /either
 
     COMMON bp_block
-
-    x = x_length
-    y = y_length
-    z = z_length
+    x = x_dim
+    y = y_dim
+    z = z_dim
 
     ;; initialize structures (one for each bandpass)
     substruc = { $
@@ -31,6 +27,7 @@ pro bp_structures
     A = replicate( substruc, n_elements(waves) )
 
     ;; Restore data and read headers
+    resolve_routine, "read_my_sdo", /either
     foreach wave, waves, i do begin
 
         ;; Uses read_sdo to get header info and restores data.
@@ -48,5 +45,7 @@ pro bp_structures
         A[i].data = data
 
     endforeach
+
+    return, A
 
 end

@@ -9,7 +9,6 @@ pro BP_TIMELAG, CUBE, algorithm=algorithm, cc_cube, tt_cube
 
 
     COMMON bp_block
-    COMMON timelag_block
 
     ;; dimensions
     dims = size(cube, /dimensions)
@@ -23,10 +22,9 @@ pro BP_TIMELAG, CUBE, algorithm=algorithm, cc_cube, tt_cube
     cc_cube = fltarr( dims[0], dims[1], num_refs)
     tt_cube = fltarr( dims[0], dims[1], num_refs)
 
+    resolve_routine, "timelag", /either
 
     ;; Loop through every reference location.
-
-
     for i = 0, num_refs-1 do begin
 
         x0 = refs[0,i]

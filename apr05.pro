@@ -5976,4 +5976,140 @@ create_common_vars
 .run bp
 ; 5
 ; y
-; % Va
+; % Variable is undefined: THRESHOLD.
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 
+; y
+; % Case statement found no matches.
+.run bp
+; 5
+; y
+; % PRINT: Variable is undefined: THRESHOLD.
+print, path
+;/solarstorm/laurel07/Data/aia/
+print ,z_length
+;     300
+print, threshold
+; % PRINT: Variable is undefined: THRESHOLD.
+retall
+create_common_vars
+.run bp
+; 5
+; y
+; % PRINT: Variable is undefined: THRESHOLD.
+retall
+.run bp
+; 5
+; 
+;Retall, and start over.
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+; y
+; % Variable is undefined: THRESHOLD (TIMELAG_BLOCK).
+retall
+common timelag_blok
+; % Common block TIMELAG_BLOK must contain variables.
+common timelag_block
+print, threshold
+; % PRINT: Variable is undefined: THRESHOLD (TIMELAG_BLOCK).
+retall
+.run bp
+; 5
+; y
+;returning cc images
+help, cc
+cc1 = cc
+tt1 = tt
+retall
+.com bp
+.run bp
+; 4
+; y
+;using algorithm.
+; % Variable is undefined: THRESHOLD.
+retall
+.run bp
+; 4
+; y
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+;using algorithm.
+.run bp
+; 5
+; y
+;returning cc images
+ip = get_kbrd()
+print, ip
+;q
+help, ip
+ip = get_kbrd()
+help, ip
+var = ''
+read, var, prompt="blah"
+; 
+help, var
+help, var1
+retall
+.run bp
+; % Procedure header must appear first and only once: MY_FUNC
+; % Return statement in procedures can't have values.
+; % 2 Compilation error(s) in module $MAIN$.
+; % Procedure header must appear first and only once: CREATE_COMMON_VARS
+; % 1 Compilation error(s) in module $MAIN$.
+.run bp
+; 5
+; 
+;returning cc images

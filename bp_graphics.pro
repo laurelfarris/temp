@@ -7,11 +7,10 @@
 ;                       be passed to actual graphing routine.
 
 
-pro BP_GRAPHICS, data, blah
+pro BP_GRAPHICS, A, blah
 
-    create_common_vars
+    create_common
     COMMON bp_block
-    COMMON timelag_block
     
     resolve_routine, "color_tables", /either
     resolve_routine, "graphic_configs", /either
@@ -22,7 +21,7 @@ pro BP_GRAPHICS, data, blah
 
         ;;  Images
         "im" : begin
-            data = (A.data[*,*,0,*])
+            data = (A.data[*,*,0,*])^0.5
             props.min_value = min(data)
             props.max_value = max(data)
             props.rgb_table = color_tables( "IM_COLORS" )
@@ -70,25 +69,25 @@ pro BP_GRAPHICS, data, blah
     
 
     ;; Window
-    wy = 828
-    wx = wy * (8.5/11.0)
+    wx = 640
+    wy = wx; * (11.0/8.5)
     w = window( dimensions=[wx, wy], location=[0, 0], buffer=0 )
 
     ;; Images
     n = (size(data, /dimensions))[2]
     im = objarr(n)
 
-    for i = 0, n-1 do begin
+    for i = 2, n-1 do begin
         props.title = "$\lambda$="+A[i].wavelength+" $\AA$; log(T)="+A[i].temperature+"K"
         im[i] = image( data[*,*,i], $
-            layout = [2,3,i+1], $
+            layout = [2,2,i+1], $
             margin = 0.1, $
             _EXTRA = props )
-        if i mod 2 eq 1 then im[i].position = im[i].position - [0.08, 0, 0.08, 0]
+        ;if i mod 2 eq 1 then im[i].position = im[i].position - [0.08, 0, 0.08, 0]
     endfor
 
     ;; Colorbar
-    cbar = colorbar( _EXTRA = cbar_props )
+    ;cbar = colorbar( _EXTRA = cbar_props )
 
 
 

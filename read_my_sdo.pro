@@ -10,10 +10,9 @@ pro READ_MY_SDO, index, data, wave
     ;; Need to redo all data to correct from the beginning.
 
     COMMON bp_block
-
-    x = x_length
-    y = y_length
-    z = z_length
+    x = x_dim
+    y = y_dim
+    z = z_dim
 
     ;; Read in header info
     fls = ( file_search( path + "*" + wave + "A*.fits" ) )[0:z-1]
