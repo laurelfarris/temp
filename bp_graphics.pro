@@ -28,25 +28,28 @@ pro BP_GRAPHICS, A, blah
 
             cbar_props.range = [props.min_value, props.max_value]
             cbar_props.title = "intensity [counts, arbitrary]"
+            make_cbar = 0
             print, "returning images"
             end
 
 
         ;; Cross-correlation images
         "cc" : begin
+            data = A.cc
             props.min_value = threshold
             props.max_value = max(data)
             props.rgb_table = color_tables( "CC_COLORS" )
-
             cbar_props.range = [props.min_value, props.max_value]
             cbar_props.title = "maximum cross-correlation"
             cbar_props.tickformat = '(F4.2)'
+            make_cbar = 1
             print, "returning cc images"
             end
 
 
         ;; Timelag images
         "tt" : begin
+            data = A.tt
             ;; Cut off timelag for cc values less than threshold
             ;data[ where( A.cc[*,*,0,*] lt threshold ) ] = -10000.0
             props.rgb_table = color_tables( "TT_COLORS" )
@@ -56,6 +59,7 @@ pro BP_GRAPHICS, A, blah
             cbar_props.range = [props.min_value, props.max_value]
             ;cbar_props.title = "timelag [cadence]"
             cbar_props.title = "timelag [minutes]"
+            make_cbar = 1
             print, "returning tt images"
             end
 
@@ -66,29 +70,28 @@ pro BP_GRAPHICS, A, blah
     props.xtitle = "x [pixels]"
     props.ytitle = "y [pixels]"
     cbar_props.position = [0.87, 0.03, 0.90, 0.97 ]
-    
 
     ;; Window
-    wx = 640
-    wy = wx; * (11.0/8.5)
+    wx = 700
+    wy = 640
+    ;wy = wx * (11.0/8.5)
     w = window( dimensions=[wx, wy], location=[0, 0], buffer=0 )
 
     ;; Images
     n = (size(data, /dimensions))[2]
     im = objarr(n)
 
-    for i = 2, n-1 do begin
+    for i=0, n-1 do begin
         props.title = "$\lambda$="+A[i].wavelength+" $\AA$; log(T)="+A[i].temperature+"K"
         im[i] = image( data[*,*,i], $
             layout = [2,2,i+1], $
             margin = 0.1, $
             _EXTRA = props )
-        ;if i mod 2 eq 1 then im[i].position = im[i].position - [0.08, 0, 0.08, 0]
+        if i mod 2 eq 1 then im[i].position = im[i].position - [0.08, 0, 0.08, 0]
     endfor
 
     ;; Colorbar
-    ;cbar = colorbar( _EXTRA = cbar_props )
-
+    if make_cbar then cbar = colorbar( _EXTRA = cbar_props )
 
 
 END;;

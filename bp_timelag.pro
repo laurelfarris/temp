@@ -5,79 +5,87 @@
 ; Notes:
 
 
-pro BP_TIMELAG, CUBE, algorithm=algorithm, cc_cube, tt_cube
+pro BP_TIMELAG, A, range=range, algorithm=algorithm
 
-
-    COMMON bp_block
-
-    ;; dimensions
-    dims = size(cube, /dimensions)
-    t = dims[2]
-    tau = indgen(t)-(t/2)
-
-    ; Number of reference locations
-    num_refs = (size(refs, /dimensions))[1]
-
-    ;; Map for actual cc values (greater than threshold)
-    cc_cube = fltarr( dims[0], dims[1], num_refs)
-    tt_cube = fltarr( dims[0], dims[1], num_refs)
 
     resolve_routine, "timelag", /either
+    COMMON bp_block
 
-    ;; Loop through every reference location.
-    for i = 0, num_refs-1 do begin
+    cc = []
+    tt = []
 
-        x0 = refs[0,i]
-        y0 = refs[1,i]
+    foreach j, range do begin
+    
+        ;; dimensions
+        cube = A[j].data
+        dims = size(cube, /dimensions)
+        t = dims[2]
+        tau = indgen(t)-(t/2)
 
-        if keyword_set( algorithm ) then begin
+        ; Number of reference locations
+        num_refs = (size(refs, /dimensions))[1]
 
-            ; initialize map of locations to test
-            map = intarr( dims[0], dims[1] )
-            map[x0,y0] = 75
-            map[x0, y0-1] = 1
-            map[x0, y0+1] = 1
-            map[x0-1, y0] = 1
-            map[x0+1, y0] = 1
+        ;; Map for actual cc values (greater than threshold)
+        cc_cube = fltarr( dims[0], dims[1], num_refs)
+        tt_cube = fltarr( dims[0], dims[1], num_refs)
 
-            ind_1D = where( map eq 1 )
+        ;; Loop through every reference location.
+        for i = 0, num_refs-1 do begin
 
+            x0 = refs[0,i]
+            y0 = refs[1,i]
 
-            ;; Run timelag on (x0,y0) until no more locations are left.
-            while 1 do begin
+            if keyword_set( algorithm ) then begin
 
-                ; Convert to 2D index array for more intuitive access
-                ind_2D = array_indices( map, ind_1D )
-                x = ind_2D[0,0]
-                y = ind_2D[1,0]
+                ; initialize map of locations to test
+                map = intarr( dims[0], dims[1] )
+                map[x0,y0] = 75
+                map[x0, y0-1] = 1
+                map[x0, y0+1] = 1
+                map[x0-1, y0] = 1
+                map[x0+1, y0] = 1
 
-                timelag, cube[x0,y0,*], cube[x,y,*], tau, maxcor
-
-                if (maxcor[1] ge threshold) then begin
-                    map[x,y] = 100
-                    cc_cube[x,y,i] = maxcor[1]
-                    tt_cube[x,y,i] = maxcor[0]
-                    ; Set map[locations of immediate neighbors] = 1
-                    locs = [ [x-1,y], [x+1,y], [x,y-1], [x,y+1] ]
-                    map[ locs[0,*], locs[1,*] ] = map[ locs[0,*], locs[1,*] ] > 1
-                endif else map[ x, y ] = 20
-               
                 ind_1D = where( map eq 1 )
-                ;; Hacky way to determine whether any 1's are left.
-                if ( (size(ind_1D))[0] eq 0 ) then break
 
-            endwhile
 
-        endif else begin
-            for x = 0, dims[0]-1 do begin    
-            for y = 0, dims[1]-1 do begin    
-                timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
-                cc_cube[x, y, i] = maxcor[1]
-                tt_cube[x, y, i] = maxcor[0]
-            endfor
-            endfor
-    endelse
+                ;; Run timelag on (x0,y0) until no more locations are left.
+                while 1 do begin
 
-    endfor
+                    ; Convert to 2D index array for more intuitive access
+                    ind_2D = array_indices( map, ind_1D )
+                    x = ind_2D[0,0]
+                    y = ind_2D[1,0]
+
+                    timelag, cube[x0,y0,*], cube[x,y,*], tau, maxcor
+
+                    if (maxcor[1] ge threshold) then begin
+                        map[x,y] = 100
+                        cc_cube[x,y,i] = maxcor[1]
+                        tt_cube[x,y,i] = maxcor[0]
+                        ; Set map[locations of immediate neighbors] = 1
+                        locs = [ [x-1,y], [x+1,y], [x,y-1], [x,y+1] ]
+                        map[ locs[0,*], locs[1,*] ] = map[ locs[0,*], locs[1,*] ] > 1
+                    endif else map[ x, y ] = 20
+                   
+                    ind_1D = where( map eq 1 )
+                    ;; Hacky way to determine whether any 1's are left.
+                    if ( (size(ind_1D))[0] eq 0 ) then break
+
+                endwhile
+
+            endif else begin
+                for x = 0, dims[0]-1 do begin    
+                for y = 0, dims[1]-1 do begin    
+                    timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
+                    cc_cube[x, y, i] = maxcor[1]
+                    tt_cube[x, y, i] = maxcor[0]
+                endfor
+                endfor
+            endelse
+        endfor
+
+        A[j].cc = mean( cc_cube, dimension=3 )
+        A[j].tt = tt_cube[*,*,0]
+    endforeach
 
 end

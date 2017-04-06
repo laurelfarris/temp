@@ -20,7 +20,9 @@ function bp_structures
         date : make_array(z, /string), $
         time : make_array(z, /string), $
         seconds : make_array(z, /nozero), $
-        data : make_array(x, y, z, /nozero) $
+        data : make_array(x, y, z, /nozero), $
+        cc : make_array(x, y, /nozero), $
+        tt : make_array(x, y, /nozero) $
         }
 
     ;; Assemble substructures in array

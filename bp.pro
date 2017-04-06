@@ -44,32 +44,27 @@ end
 
 
 resolve_routine, "bp_structures", /either
-resolve_routine, "bp_timelag", /either
-resolve_routine, "bp_graphics", /either
 
 ;foreach step, steps do begin
+read, step, prompt="Step (" + strtrim(step,1) + "): "
+step = fix(step)
+
 case step of
 ; Create array of structures, one for each wavelength in 'waves'
     1 : create_common
     2 : A = bp_structures()
-    3 : print, "alignment routine goes here... maybe"
+    3 : print, "alignment routine goes here"
     4 : begin
-        cc = [] & tt = []
-        for i = 0, n_elements(A)-1 do begin
-            BP_TIMELAG, A[i].data, algorithm=1, cc_cube, tt_cube
-            cc_avg = mean( cc_cube, dimension=3 )
-            cc = [ [[cc]], [[cc_avg]] ]
-            tt = [ [[tt]], [[tt_cube[*,*,0]]] ]
-        endfor
+        resolve_routine, "bp_timelag", /either
+        BP_TIMELAG, A, range=[0:5], algorithm=0
         end
-
-    5 : BP_GRAPHICS, A, "im"
-    6 : BP_GRAPHICS, A, "cc"
-    7 : BP_GRAPHICS, A, "tt"
+    5 : begin 
+        resolve_routine, "bp_graphics", /either
+        BP_GRAPHICS, A[2:*], "cc";, blah="cc", blah="tt"
+        end
 
     ;6 : bp_plots
 
 endcase
 ;endforeach
-step = !NULL
 end
