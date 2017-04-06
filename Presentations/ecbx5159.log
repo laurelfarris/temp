@@ -1,0 +1,50 @@
+This is METAFONT, Version 2.7182818 (TeX Live 2015) (preloaded base=mf 2015.5.24)  5 APR 2017 18:34
+**\mode:=ljfour; mag:=1; nonstopmode; input ecbx5159
+
+(/Users/laurel/Library/texlive/2015/texmf-var/fonts/source/jknappen/ec/ecbx5159
+.mf (/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/exbase.mf)
+(/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/ecbx.mf
+(/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/exroman.mf
+ Ok (/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/exaccess.mf
+ Ok) (/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/expseudo.mf
+ Ok) (/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/exruwest.mf
+ Ok [192] [193] [194] [195] [196] [197] [198] [199] [200] [201] [202] [203]
+[204] [205] [206] [207] [208] [209] [210] [211] [212] [213] [214] [215]
+[216] [217] [218] [219] [220] [221] [222] [223])
+(/usr/local/texlive/2015/texmf-dist/fonts/source/jknappen/ec/exrlwest.mf
+ Ok [224] [225] [226] [227] [228] [229] [230] [231] [232] [233] [234] [235]
+[236] [237] [238] [239] [240] [241] [242] [243] [244] [245] [246] [247]
+[248] [249] [250] [251] [252]
+! Interruption.
+<for(u)> (SUFFIX0)
+                  :=(SUFFIX0)#*hppp; ENDFOR
+define_pixels->...ixes$=(TEXT0):$:=$ #*hppp;endfor
+                                                  
+font_setup->..._jut,stem_corr,vair_corr,apex_corr)
+                                                  ;define_blacker_pixels(not...
+<for(1)> ...lear_mode_guards;mode_setup;font_setup
+                                                  ;pseudo_setup;if.is_small_...
+l.1012 repeat_once
+                  ;
+? 
+! Emergency stop.
+<for(u)> (SUFFIX0)
+                  :=(SUFFIX0)#*hppp; ENDFOR
+define_pixels->...ixes$=(TEXT0):$:=$ #*hppp;endfor
+                                                  
+font_setup->..._jut,stem_corr,vair_corr,apex_corr)
+                                                  ;define_blacker_pixels(not...
+<for(1)> ...lear_mode_guards;mode_setup;font_setup
+                                                  ;pseudo_setup;if.is_small_...
+l.1012 repeat_once
+                  ;
+End of file on the terminal!
+
+ 
+Here is how much of METAFONT's memory you used:
+ 562 strings out of 5274
+ 6337 string characters out of 69945
+ 45114 words of memory out of 5000000
+ 1480 symbolic tokens out of 9500
+ 13i,79n,0r,23p,228b stack positions out of 300i,300n,1000r,150p,200000b
+Output written on ecbx5159.600gf (61 characters, 83152 bytes).
