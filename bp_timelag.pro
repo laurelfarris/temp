@@ -84,8 +84,8 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
             endelse
         endfor
 
-        A[j].cc = mean( cc_cube, dimension=3 )
-        A[j].tt = tt_cube[*,*,0]
+        A[j].cc_alg = mean( cc_cube, dimension=3 )
+        A[j].tt_alg = tt_cube[*,*,0]
     endforeach
 
 end

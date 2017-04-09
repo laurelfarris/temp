@@ -2810,4 +2810,78 @@ ls
 ; 5
 ;returning tt images
 .run bp
-; % You compiled a main program whi
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning tt images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+80 * 0.6
+;       48.000000
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp5
+; % Error opening file. File: bp5
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images
+.run bp
+; % You compiled a main program while inside a procedure.  Returning.
+; 5
+;returning images

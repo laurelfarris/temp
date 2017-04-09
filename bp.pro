@@ -43,7 +43,6 @@ pro create_common
 end
 
 
-resolve_routine, "bp_structures", /either
 
 read, step, prompt="Step (" + strtrim(step,1) + "): "
 ;if (input eq '') then input = step else step = input
@@ -52,15 +51,18 @@ step = fix(step)
 case step of
 ; Create array of structures, one for each wavelength in 'waves'
     1 : create_common
-    2 : A = bp_structures()
+    2 : begin
+        resolve_routine, "bp_structures", /either
+        A = bp_structures()
+        end
     3 : print, "alignment routine goes here"
     4 : begin
         resolve_routine, "bp_timelag", /either
-        BP_TIMELAG, A, range=[0:5], algorithm=0
+        BP_TIMELAG, A, range=[0:5], algorithm=1
         end
     5 : begin 
         resolve_routine, "bp_graphics", /either
-        BP_GRAPHICS, A[2:*], "im";, blah="cc", blah="tt"
+        BP_GRAPHICS, A[2:*], "tt";, blah="cc", blah="tt"
         end
 
     ;6 : bp_plots

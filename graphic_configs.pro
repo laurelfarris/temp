@@ -1,12 +1,12 @@
 ; Filename:         graphic_configs.pro
-; Last modified:    Wed 10 Mar 2017
+; Last modified:    Sat 09 Apr 2017
 ; Programmer:       Laurel Farris
 ; Description:      General configurations that apply to all graphics.
 ;                       Call once to define common block, then shouldn't have to call again.
 
 
 pro GRAPHIC_CONFIGS, $
-    cbar_props, image_props, scatter_props
+    cbar_props, image_props, plot_props
 
     fontsize = 10
 
@@ -47,17 +47,14 @@ pro GRAPHIC_CONFIGS, $
         }
 
     ;; Scatterplot properties
-    scatter_props = { $
+    plot_props = { $
         current    : 1, $
         device     : 0, $
         title      : "", $
         axis_style : 2, $
         xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
-        font_size  : fontsize+1, $
-        symbol : 'dot', $
-        sym_filled : 1, $
-        sym_size : 1.0 $
+        font_size  : fontsize+1 $
         }
 
 end

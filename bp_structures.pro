@@ -22,7 +22,9 @@ function bp_structures
         seconds : make_array(z, /nozero), $
         data : make_array(x, y, z, /nozero), $
         cc : make_array(x, y, /nozero), $
-        tt : make_array(x, y, /nozero) $
+        tt : make_array(x, y, /nozero), $
+        cc_alg : make_array(x, y, /nozero), $
+        tt_alg : make_array(x, y, /nozero) $
         }
 
     ;; Assemble substructures in array
