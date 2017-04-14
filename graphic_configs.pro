@@ -6,7 +6,7 @@
 
 
 pro GRAPHIC_CONFIGS, $
-    cbar_props, image_props, plot_props
+    cbar_props, image_props, plot_props, scatterplot_props
 
     fontsize = 10
 
@@ -28,7 +28,6 @@ pro GRAPHIC_CONFIGS, $
         title       : "" $
         }
 
-    ;; Properties for any graphic (images and plots)
 
     ;; Image properties
     image_props = { $
@@ -46,7 +45,7 @@ pro GRAPHIC_CONFIGS, $
         max_value : 0.0 $
         }
 
-    ;; Scatterplot properties
+    ;; Plot properties
     plot_props = { $
         current    : 1, $
         device     : 0, $
@@ -56,5 +55,21 @@ pro GRAPHIC_CONFIGS, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
         font_size  : fontsize+1 $
         }
+
+    ;; Scatterplot properties
+    scatterplot_props = { $
+        current    : 1, $
+        device     : 0, $
+        title      : "", $
+        axis_style : 2, $
+        xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
+        ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
+        font_size  : fontsize+1 $
+        }
+end
+
+;; Call at Main Level
+GRAPHIC_CONFIGS, cbar_props, props, plot_props, scatterplot_props
+
 
 end

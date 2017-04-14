@@ -7,9 +7,12 @@
 
 pro BP_TIMELAG, A, range=range, algorithm=algorithm
 
+    x_ref = 339 & y_ref = 834
+
+    refs = [[40,40],[39,40],[41,40],[40,39],[40,41],[39,39],[41,39],[39,41],[41,41]]
+    threshold = 0.5
 
     resolve_routine, "timelag", /either
-    COMMON bp_block
 
     cc = []
     tt = []
@@ -34,6 +37,9 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
 
             x0 = refs[0,i]
             y0 = refs[1,i]
+
+
+;; Algorithm (should be its own subroutine, like timelag itself.)
 
             if keyword_set( algorithm ) then begin
 
@@ -72,20 +78,24 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
                     if ( (size(ind_1D))[0] eq 0 ) then break
 
                 endwhile
+                A[j].cc_alg = mean( cc_cube, dimension=3 )
+                A[j].tt_alg = tt_cube[*,*,0]
 
+;; No algorithm
             endif else begin
                 for x = 0, dims[0]-1 do begin    
-                for y = 0, dims[1]-1 do begin    
-                    timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
-                    cc_cube[x, y, i] = maxcor[1]
-                    tt_cube[x, y, i] = maxcor[0]
+                    for y = 0, dims[1]-1 do begin    
+                        timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
+                        cc_cube[x, y, i] = maxcor[1]
+                        tt_cube[x, y, i] = maxcor[0]
+                    endfor
                 endfor
-                endfor
+                A[j].cc = mean( cc_cube, dimension=3 )
+                A[j].tt = tt_cube[*,*,0]
             endelse
-        endfor
 
-        A[j].cc_alg = mean( cc_cube, dimension=3 )
-        A[j].tt_alg = tt_cube[*,*,0]
-    endforeach
+        endfor ;; x0[i], y0[i]
+
+    endforeach ;; A[j]
 
 end

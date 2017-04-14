@@ -1,12 +1,12 @@
 
-FUNCTION radius, A, x0, y0
+FUNCTION radius, arr, x0, y0
 
-    dims = size( A, /dimensions )
-    locs = where( A eq A )
-    rad = fltarr( n_elements(locs) )
-    ind = float(array_indices( A, locs ))
+    dims = size( arr, /dimensions )
+    locs = indgen( n_elements(arr) ) ;; unecessary variable, but keeps things less messy
+    ind = float( array_indices( arr, locs ) )
 
-    for i = 0, n_elements(locs)-1 do begin
+    rad = fltarr( n_elements(arr) )
+    for i = 0, n_elements(arr)-1 do begin
         x = ind[0,i] & y = ind[1,i]
         rad[i] = sqrt( (x0-x)^2 + (y0-y)^2 )
     endfor

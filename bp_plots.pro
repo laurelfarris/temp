@@ -1,97 +1,119 @@
+pro make_lightcurves, props, A
 
-fontsize = 10
-plot_props = { $
-    current    : 1, $
-    ;device     : 0, $
-    ;xtickdir   : 0, ytickdir   : 0, $
-    ;xticklen   : 0.03, $
-    ;yticklen   : 0.02, $
-    ;xmajor     : 6, $
-    ;xminor     : 0, $
-    ;ymajor     : 10, $
-    ;yminor     : 5, $
-    ;axis_style : 2, $
-    ;xstyle     : 3, $
-    ;ystyle     : 2, $
-    ;xrange     : [0, 2.*!PI], $
-    ;yrange     : [-1.1, 1.1], $
-    ;xtickformat: '(I)', $
-    ;ytickformat: '(F5.2)', $
-    xtickname  : "", $
-    ytickname  : "", $
-    ;xshowtext  : 0, $
-    ;yshowtext  : 0, $
-    ;title      : "", $
-    ;xtitle     : "x", $
-    ;ytitle     : "f(x)", $
-    font_size  : fontsize+1, xtickfont_size : fontsize, ytickfont_size : fontsize $
-    }
+        
+    d1 = reform(A[3].data[40,40,*])
+    d2 = reform(A[3].data[40,43,*])
+    d3 = reform(A[3].data[5,5,*])
 
+    t = indgen(300)
+    tau = t-150
+    timelag, d1, d2, tau, maxcor2, c2
+    timelag, d1, d3, tau, maxcor3, c3
 
-n = 1000
-y1 = interpolate(randomu(seed, 10), indgen(n)/n)
-y2 = shift(y1, 10)
+    d1 = d1/max(d1)
+    d2 = d2/max(d2) + 0.75
+    d3 = d3/max(d3) + 1.50
 
-tau = indgen(n)
-timelag, y1, y2, tau, maxcor, c
+    p1 = plot( t, d1, layout=[1,2,1], margin=0.15, $
+        yrange=[0,3], $
+        xtitle = "image (12-second cadence)", ytitle = "intensity (normalized)", $
+        _EXTRA=props )
+    p2 = plot( t, d2, /overplot )
+    p3 = plot( t, d3, /overplot )
+    xaxis = axis('x', location='top', $
+        title="time [minutes]", coord_transform=[0, 0.2], $
+        tickfont_size=10, $
+        tickdir=1 )
 
-;; Window
-if (getwindows('plot')) then w.close
-wx = 700
-wy = 300
-w = window( dimensions=[wx, wy], location=[0, 0], buffer=0 )
+    p = plot( tau, c2, layout=[1,2,2], margin=0.15, $
+        xrange=[min(tau), max(tau)], $
+        yrange=[-1.0, 1.0], $
+        xtitle = "timelag", ytitle = "cross-correlation", $
+        _EXTRA=props )
+    p = plot( tau, c3, /overplot )
+    xaxis = axis('x', location='top', $
+        title="time [minutes]", coord_transform=[0, 0.2], $
+        tickfont_size=10, $
+        target=p, $
+        tickdir=1 )
 
-p1 = plot( tau, y1, color="blue", layout=[1,2,1], $
-    ;xrange=[0, 2.*!PI], $
-    xtitle = "x", ytitle = "f(x)", $
-    _EXTRA=plot_props )
-p2 = plot( tau, y2, color="red", /overplot )
+    text_props = { $
+        font_size : 10, $
+        data      : 1  }
+    tx = 25
+    text = TEXT( tx, 0.6, "(a)", _EXTRA=text_props)
+    text = TEXT( tx, 1.2, "(b)", _EXTRA=text_props)
+    text = TEXT( tx, 2.0, "(c)", _EXTRA=text_props)
 
-p3 = plot( tau, c, layout=[1,2,2], $
-    xtitle = "lag", $
-    ytitle = "cross-correlation", $
-    _EXTRA=plot_props )
-STOP
+end
 
 
-area = []
-wavel = []
-for i = 2, 5 do begin
-    area = [area, n_elements( where( A[i].cc_alg ne 0.0 ) )]
-    wavel = [wavel, fix(A[i].wavelength)]
-endfor
+PRO plot_cc_vs_radius
 
-area = area * 0.36
+    ;; Window
+    if (getwindows('plot')) then w.close
+    wx = 600
+    wy = 600
+    w = window( dimensions=[wx, wy], location=[0, 0], buffer=0 )
 
-;; Plot
-xtickname = [ "", A[2:*].wavelength, "" ]
-p = scatterplot( indgen(4), area, symbol="*", xtickname=xtickname, $
-    sym_size=2, $
-    _EXTRA=plot_props )
+    ;make_lightcurves, props, A
 
+    x0 = refs[0,0]
+    y0 = refs[1,0]
 
-
-STOP
-
-
-
-d1 = reform(A[3].data[40,40,*])
-d2 = reform(A[3].data[38,40,*])
-
-d1 = d1/max(d1) + 1.0
-d2 = d2/max(d2) + 2.0
-
-tau = indgen(300)-150
-timelag, d1, d2, tau, maxcor, c
-
-p1 = plot( tau, c, _EXTRA=plot_props )
-p2 = plot( tau, d1, overplot=1, _EXTRA=plot_props )
-p3 = plot( tau, d2, overplot=1, _EXTRA=plot_props )
-
-x = 0.15
-text = TEXT( x,0.17, "(a)")
-text = TEXT( x,0.59, "(b)")
-text = TEXT( x,0.75, "(c)")
+    for i = 2, 5 do begin
+        arr = A[i].cc
+        r = reform( radius( arr, x0, y0 ), n_elements(arr) )
+        arr = reform( arr, n_elements(arr) )
+        p = scatterplot( r, arr, /current, layout=[2,2,i+1], margin=0.2 )
+    endfor
+end
 
 
+PRO plot_cc_example
+
+    tau = indgen(n) - n/2.
+    timelag, y1, y2, tau, maxcor, c
+
+    p1 = plot( x, y1, layout=[1,2,1], margin=0.2, $
+        xtitle = "x", $
+        ytitle = "f(x)", $
+        color="blue", $
+        _EXTRA=plot_props )
+
+    p2 = plot( x, y2, /overplot, $
+        color="red" )
+
+    ;x = x - (max(x))/2
+    p3 = plot( x, c, layout=[1,2,2], margin=0.2, $
+        ;xmajor = 10, $
+        xtitle = "lag", $
+        ytitle = "cross-correlation", $
+        _EXTRA=plot_props )
+
+    pos = 0.1
+    p3.position = p3.position + [0, pos, 0, pos]
+
+    t1 = text(0.9, 0.8, "(a)", color="blue")
+    t2 = text(0.9, 0.7, "(b)", color="red")
+
+    filename = "pl_ccExample"
+END
+
+
+PRO plot_area_vs_wave
+    area = []
+    wavel = []
+    for i = 2, 5 do begin
+        area = [area, n_elements( where( A[i].cc_alg ne 0.0 ) )]
+        wavel = [wavel, fix(A[i].wavelength)]
+    endfor
+
+    area = area * 0.36
+
+    ;; Plot
+    xtickname = [ "", A[2:*].wavelength, "" ]
+    p = scatterplot( indgen(4), area, symbol="*", xtickname=xtickname, $
+        sym_size=2, $
+        _EXTRA=plot_props )
 END
