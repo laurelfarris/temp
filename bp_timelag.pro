@@ -1,11 +1,14 @@
 ; Last modified:        05 April 2017
 ; Programmer:           Laurel Farris
 ; Description:          Input data cube, reference pixel locations, and threshold value.
-;                       Returns 
+;                       Returns
 ; Notes:
 
 
-pro BP_TIMELAG, A, range=range, algorithm=algorithm
+
+range = [2:5]
+algorithm=0
+algorithm=1
 
     x_ref = 339 & y_ref = 834
 
@@ -18,7 +21,7 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
     tt = []
 
     foreach j, range do begin
-    
+
         ;; dimensions
         cube = A[j].data
         dims = size(cube, /dimensions)
@@ -41,7 +44,7 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
 
 ;; Algorithm (should be its own subroutine, like timelag itself.)
 
-            if keyword_set( algorithm ) then begin
+            if ( algorithm eq 1 ) then begin
 
                 ; initialize map of locations to test
                 map = intarr( dims[0], dims[1] )
@@ -72,7 +75,7 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
                         locs = [ [x-1,y], [x+1,y], [x,y-1], [x,y+1] ]
                         map[ locs[0,*], locs[1,*] ] = map[ locs[0,*], locs[1,*] ] > 1
                     endif else map[ x, y ] = 20
-                   
+
                     ind_1D = where( map eq 1 )
                     ;; Hacky way to determine whether any 1's are left.
                     if ( (size(ind_1D))[0] eq 0 ) then break
@@ -83,8 +86,8 @@ pro BP_TIMELAG, A, range=range, algorithm=algorithm
 
 ;; No algorithm
             endif else begin
-                for x = 0, dims[0]-1 do begin    
-                    for y = 0, dims[1]-1 do begin    
+                for x = 0, dims[0]-1 do begin
+                    for y = 0, dims[1]-1 do begin
                         timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
                         cc_cube[x, y, i] = maxcor[1]
                         tt_cube[x, y, i] = maxcor[0]
