@@ -9,13 +9,13 @@
 ; INPUT:      cube = array of images (x,y,t)
 ;
 ; OUTPUT:     cube = data aligned to the first image
- 
-; Example:    
-;             
+
+; Example:
+;
 ; AUTHOR:     Peter T. Gallagher, July 2001
-;   	      Altered by James McAteer March 2002 with ref optional 
+;             Altered by James McAteer March 2002 with ref optional
 ;                input
-;             Altered by Shaun Bloomfield April 2009 with optional 
+;             Altered by Shaun Bloomfield April 2009 with optional
 ;                output of calculated shifts
 ;
 ;-
@@ -33,9 +33,9 @@ PRO align_cube3, cube, avg
     shifts = FLTARR( 2, sz)
 
 
-    PRINT, "Start:	", SYSTIME()
+    PRINT, "Start:  ", SYSTIME()
     FOR i = 0, sz-1 DO BEGIN
-        
+
         ;print, i
         offset = ALIGNOFFSET( cube[*, *, i], ref )
         ;IF ~(quiet) THEN PRINT, i, offset[0], offset[1]
@@ -45,7 +45,7 @@ PRO align_cube3, cube, avg
         ;IF abs(offset(1)) GT 30 THEN offset(1)=0.0
 
         ;; Shift the i-th image in the cube
-        cube[*, *, i] = ALIGN_SHIFT_SUB( cube[*, *, i], -offset[0], -offset[1] )
+        cube[*, *, i] = SHIFT_SUB( cube[*, *, i], -offset[0], -offset[1] )
 
         ;; Append offsets for the i-th image to the 'shifts' array
         shifts[*, i] = -offset
@@ -57,7 +57,7 @@ PRO align_cube3, cube, avg
     ;;  to use as a test for when to stop the alignment.
     x_sdv = STDDEV( shifts[0,*] )
     y_sdv = STDDEV( shifts[1,*] )
-    
+
     x_sdv = mean( abs( shifts[0,*] ))
     y_sdv = mean( abs( shifts[1,*] ))
 

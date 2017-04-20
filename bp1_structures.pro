@@ -18,37 +18,48 @@ x = 1000
 y = 1000
 z = 300
 
+;; Read data or restore .sav files
+get_data = 1
+
 ;; initialize structures (one for each bandpass)
 substruc = { $
     wavelength : "", $
     temperature : "", $
-    date : make_array(z, /string), $
+    date : make_array(z, /string), $  ;; is this necessary?
     time : make_array(z, /string), $
-    data : make_array(x, y, z, /nozero) }  ;; is this necessary?
+    data : make_array(x, y, z, /nozero) }
 
 ;; Assemble substructures in array
 A = replicate( substruc, n_elements(waves) )
-
-print, "initialized structures"
 
 ;; Restore data and read headers
 foreach wave, waves, i do begin
 
     ;; Read in header info
     fls = ( file_search( path + "*" + wave + "A*.fits" ) )[0:z-1]
-    READ_SDO, fls, index, cube, nodata=1
+    case get_data of
+        0 : begin
+            READ_SDO, fls, index, cube, /nodata
+            ;; Restore aligned data (1000x1000; variable name = cube)
+            restore, path + "aligned_" + wave + ".sav"
+            end
+        1 : begin
+            READ_SDO, fls, index, data
+            ;; Shift cube according to header information
+            ;; Use array_equal to make sure shifts are the same for every image!!
+            cube = shift( cube, round(index[0].xcen), round(index[0].ycen), 0 )
+            cube = cube[ 0:1999, 2000:3999, * ]
+            BP_ALIGN, cube
+            save, cube, filename = path + "aligned_" + wave + ".sav"
+            end
+    endcase
 
-    ;; Restore aligned data (1000x1000; variable name = cube)
-    restore, path + "aligned_" + wave + ".sav"
-
-    ;; Shift cube according to header information
-    data = shift( cube, round(index[0].xcen), round(index[0].ycen), 0 )
 
     A[i].wavelength = strtrim( string(index[0].wavelnth), 1 )
     A[i].temperature = strtrim( temps[i], 1 )
     A[i].date = strmid( index.date_obs,  0, 10 )
     A[i].time = strmid( index.date_obs, 11, 21 )
-    A[i].data = data
+    A[i].data = cube
 
 endforeach
 

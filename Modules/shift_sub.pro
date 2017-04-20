@@ -1,4 +1,4 @@
-function align_shift_sub, image, x0, y0, cubic=cubic
+function shift_sub, image, x0, y0, cubic=cubic
 ;+
 ; NAME: SHIFT_SUB
 ; PURPOSE:

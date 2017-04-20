@@ -1,48 +1,54 @@
 ; Last modified:        05 April 2017
 ; Programmer:           Laurel Farris
-; Description:          Input data cube, reference pixel locations, and threshold value.
-;                       Returns
-; Notes:
+; Description:          Input data cube, reference pixel locations, and
+;                           threshold value.
+; Notes:                Possible memory issues after many runs. Actual timelag
+;                           should perhaps be a subroutine (as suggested by James).
+
+; Choosing bandpass, bp, alg y/n, etc.
+;   should be separate from routine that actually runs through the reference
+;   pixels and does the timelag calculations
 
 
 
-range = [2:5]
 algorithm=0
 algorithm=1
 
-    x_ref = 339 & y_ref = 834
+;; CBP number ( 0 = original )
+bb = 0
 
-    refs = [[40,40],[39,40],[41,40],[40,39],[40,41],[39,39],[41,39],[39,41],[41,41]]
-    threshold = 0.5
+;; Bandpass/wavelength
+ww = 3
 
-    resolve_routine, "timelag", /either
+;; Data
+bp1_x = bps[0,bb] & bp1_y = bps[1,bb]
+len = 40
+cube = A[ww].data[ bp1_x-len : bp1_x+len-1 , bp1_y-(len/2) : bp1_y+(len/2)-1 , *]
+dims = size(cube, /dimensions)
 
-    cc = []
-    tt = []
+;; Timelag
+resolve_routine, "timelag", /either
+refs = [[40,40],[39,40],[41,40],[40,39],[40,41],[39,39],[41,39],[39,41],[41,41]]
+threshold = 0.5
+t = 300
+tau = indgen(t)-(t/2)
 
-    foreach j, range do begin
+; Number of reference locations
+num_refs = (size(refs, /dimensions))[1]
 
-        ;; dimensions
-        cube = A[j].data
-        dims = size(cube, /dimensions)
-        t = dims[2]
-        tau = indgen(t)-(t/2)
+;; Map for actual cc values (greater than threshold)
+cc_cube = fltarr( dims[0], dims[1], num_refs)
+tt_cube = fltarr( dims[0], dims[1], num_refs)
 
-        ; Number of reference locations
-        num_refs = (size(refs, /dimensions))[1]
+;; Loop through every reference location.
+for i = 0, num_refs-1 do begin
 
-        ;; Map for actual cc values (greater than threshold)
-        cc_cube = fltarr( dims[0], dims[1], num_refs)
-        tt_cube = fltarr( dims[0], dims[1], num_refs)
-
-        ;; Loop through every reference location.
-        for i = 0, num_refs-1 do begin
-
-            x0 = refs[0,i]
-            y0 = refs[1,i]
+    x0 = refs[0,i]
+    y0 = refs[1,i]
 
 
 ;; Algorithm (should be its own subroutine, like timelag itself.)
+;;   Still should use every pixel as a reference? More than 3x3 at least?
 
             if ( algorithm eq 1 ) then begin
 
@@ -99,6 +105,5 @@ algorithm=1
 
         endfor ;; x0[i], y0[i]
 
-    endforeach ;; A[j]
 
 end
