@@ -4,9 +4,9 @@
 
 path = "/solarstorm/laurel07/Data/hmi/"
 
-fls = ( file_search( path + "*.fits" ) )
+fls = ( file_search( path + "*magnetogram*.fits" ) )
 
-read_sdo, fls, index, data
+read_sdo, fls, index, data, 289, 784, 100, 100
 
 im = image( data[*,*,0], layout=[1,1,1], margin=0 )
 

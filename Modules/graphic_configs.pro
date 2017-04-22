@@ -5,13 +5,13 @@
 ;                       Call once to define common block, then shouldn't have to call again.
 
 
-pro GRAPHIC_CONFIGS, $
-    cbar_props, image_props, plot_props, scatterplot_props
+function GRAPHIC_CONFIGS, blah
 
     fontsize = 10
 
     ;; Colorbar properties
     cbar_props = { $
+        name        : "Color Bar", $
         orientation : 1, $
         device      : 0, $
         position    : [0.0, 0.0, 0.0, 0.0], $
@@ -31,6 +31,7 @@ pro GRAPHIC_CONFIGS, $
 
     ;; Image properties
     image_props = { $
+        name       : "Image", $
         current    : 1, $
         device     : 0, $
         title      : "", $
@@ -47,6 +48,7 @@ pro GRAPHIC_CONFIGS, $
 
     ;; Plot properties
     plot_props = { $
+        name       : "Plot", $
         current    : 1, $
         device     : 0, $
         title      : "", $
@@ -58,18 +60,26 @@ pro GRAPHIC_CONFIGS, $
 
     ;; Scatterplot properties
     scatterplot_props = { $
+        name       : "ScatterPlot", $
         current    : 1, $
         device     : 0, $
         title      : "", $
         axis_style : 2, $
         xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
+        symbol     : "dot", $
+        sym_size   : 1.0, $
+        sym_thick  : 2.0, $
+        sym_filled : 1, $
         font_size  : fontsize+1 $
         }
-end
 
-;; Call at Main Level
-GRAPHIC_CONFIGS, cbar_props, props, plot_props, scatterplot_props
 
+    case blah of
+        0 : return, cbar_props
+        1 : return, image_props
+        2 : return, plot_props
+        3 : return, scatterplot_props
+    endcase
 
 end

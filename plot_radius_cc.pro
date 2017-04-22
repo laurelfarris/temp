@@ -47,3 +47,34 @@ pro plot_cc_vs_radius
 
 
 end
+
+c = cc_cube[*,*,0]
+r = radius( c )
+c = reform( c, n_elements(c), /overwrite )
+t = tt_cube[*,*,0]
+t = reform( t, n_elements(t), /overwrite )
+resolve_routine, "graphic_configs", /either
+props = graphic_configs(3)
+
+my_window, 600, 500
+
+p = scatterplot( r, c, layout=[1,1,1], margin=0.1, $
+    min_value = 0.5, $
+    xtitle = "distance from center [pixels]", $
+    ytitle = "cross-correlation", $
+    _EXTRA = props )
+
+STOP
+
+for i = 0, 5 do begin
+    p = scatterplot( r, c, layout=[2,3,i+1], margin=0.1, $
+        min_value = 0.5, $
+        sym_filled = 1, $
+        sym_size = 0.4, $
+        _EXTRA = props )
+endfor
+
+
+
+
+end

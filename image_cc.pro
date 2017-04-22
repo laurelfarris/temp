@@ -1,38 +1,25 @@
 ; Filename:         bp_graphics.pro
-; Last modified:    09 April 2017
+; Last modified:    20 April 2017
 ; Programmer:       Laurel Farris
-; Description:      Set up all structures containing graphics properties
-;                       according to type of data being imaged.
-;                   Structures are returned to the main level, and can then
-;                       be passed to actual graphing routine.
+; Description:      Modify graphic properties according to type of data being imaged.
 
 
+pro image_bps, data, props, blah
 
+    props = graphic_configs(1)
+    cbar_props = graphic_configs(0)
 
-blah = "im"
-length = 100
-x1 = x_ref - (length/2)
-x2 = x_ref + (length/2)
-y1 = y_ref - (length/2)
-y2 = y_ref + (length/2)
-
-
-case blah of
+    case blah of
 
     ;;  Images
     "im" : begin
-        data = (A.data[x1:x2, y1:y2, 0])^0.5
         props.min_value = min(data)
         props.max_value = max(data)
         props.rgb_table = color_tables( "IM_COLORS" )
-        textcolor = "white"
-        print, "returning images"
         end
-
 
     ;; Cross-correlation images
     "cc" : begin
-        data = A.cc
         props.min_value = threshold
         props.max_value = max(data)
         props.rgb_table = color_tables( "CC_COLORS" )
@@ -40,15 +27,12 @@ case blah of
         cbar_props.title = "maximum cross-correlation"
         cbar_props.tickformat = '(F4.2)'
         make_cbar = 1
-        print, "returning cc images"
         end
 
 
     ;; Timelag images
     "tt" : begin
-        data = A.tt
         ;; Cut off timelag for cc values less than threshold
-        data[ where( A.cc lt threshold ) ] = -10000.0
         props.rgb_table = color_tables( "TT_COLORS" )
         ;props.min_value = round( min(A.tt))
         props.min_value = -150
@@ -57,10 +41,24 @@ case blah of
         ;cbar_props.title = "timelag [cadence]"
         cbar_props.title = "timelag [minutes]"
         make_cbar = 1
-        print, "returning tt images"
         end
-endcase
 
+    endcase
+
+end
+
+
+data[ where( A.cc lt threshold ) ] = -10000.0
+data = (A.data[x1:x2, y1:y2, 0])^0.5
+length = 100
+
+;; Call procedure to set up props
+image_bps, data, props, "im"
+
+x1 = bp_x - (length/2)
+x2 = bp_x + (length/2)
+y1 = bp_y - (length/2)
+y2 = bp_y + (length/2)
 
 n = n_elements(data[0,0,*])
 rows = ((n-1)/2) + 1
@@ -85,15 +83,6 @@ for i=0, n-1 do begin
     pos = [ [pos], [im[i].position] ] 
    ; text = TEXT( pos[0,i]+0.01, pos[3,i]-0.04, letter[i], color=textcolor ) 
 endfor
-im[0].xtitle = "x [pixels]"
-im[0].ytitle = "y [pixels]"
-STOP
-
-im[2].xtitle = "x [arcsec]"
-im[3].xtitle = "x [arcsec]"
-im[0].ytitle = "y [arcsec]"
-im[2].ytitle = "y [arcsec]"
-
 
 pos1 = im[-1].position
 pos2 = im[1].position
@@ -105,7 +94,7 @@ cy2 = pos2[3]
 cbar_props.position = [ cx1, cy1, cx2, cy2]
 
 ;; Colorbar
-if make_cbar then cbar = colorbar( _EXTRA = cbar_props )
+cbar = colorbar( _EXTRA = cbar_props )
 
 
 END;;

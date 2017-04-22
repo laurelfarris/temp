@@ -18,20 +18,12 @@ pro extra_axis, target
         tickdir=1 )
 end
 
-;; Plot properties
-plot_props = { $
-    current    : 1, $
-    device     : 0, $
-    title      : "", $
-    axis_style : 2, $
-    xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
-    ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
-    font_size  : fontsize+1 $
-    }
+plot_props = graphic_configs(2)
 
 ;; Lightcurves from center, close to center, and far away.
-d1 = reform(a[3].data[40,40,*])
-d2 = reform(a[3].data[40,43,*])
+
+d1 = reform(a[3].data[50,50,*])
+d2 = reform(a[3].data[50,53,*])
 d3 = reform(a[3].data[5,5,*])
 
 ;; Run timelag between d1/d2, then d1/d3
@@ -44,6 +36,8 @@ timelag, d1, d3, tau, maxcor3, c3
 d1 = d1/max(d1)
 d2 = d2/max(d2) + 0.75
 d3 = d3/max(d3) + 1.50
+
+my_window, 600, 600
 
 ;; Frame 1 - Lightcurves
 p1 = plot( t, d1, $
@@ -73,7 +67,7 @@ p4 = plot( tau, c2, $
     yrange = [-1.0, 1.0], $
     xtitle = "timelag", $
     ytitle = "cross-correlation", $
-    _EXTRA = props )
+    _EXTRA = plot_props )
 p5 = plot( tau, c3, /overplot )
 extra_axis, p4
 
