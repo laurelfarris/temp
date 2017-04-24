@@ -46,13 +46,14 @@ function GRAPHIC_CONFIGS, blah
         max_value : 0.0 $
         }
 
-    ;; Plot properties
+
+    ;; 2.  Plot properties
     plot_props = { $
         name       : "Plot", $
         current    : 1, $
         device     : 0, $
         title      : "", $
-        axis_style : 2, $
+        axis_style : 1, $
         xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
         font_size  : fontsize+1 $
@@ -64,11 +65,11 @@ function GRAPHIC_CONFIGS, blah
         current    : 1, $
         device     : 0, $
         title      : "", $
-        axis_style : 2, $
+        axis_style : 1, $
         xtickdir   : 0, xticklen : 0.03, xminor : 5, xtickfont_size : fontsize, $
         ytickdir   : 0, yticklen : 0.03, yminor : 5, ytickfont_size : fontsize, $
-        symbol     : "dot", $
-        sym_size   : 1.0, $
+        symbol     : "*", $
+        sym_size   : 2.0, $
         sym_thick  : 2.0, $
         sym_filled : 1, $
         font_size  : fontsize+1 $
