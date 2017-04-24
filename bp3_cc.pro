@@ -15,9 +15,6 @@ pro bp3_cc, cube, refs=refs, threshold=threshold, algorithm=algorithm, $
     cc_cube, tt_cube
 
 
-    d = cube[*,*,0]
-    if not keyword_set(refs) then refs = array_indices( d, where( d eq max(d) ) )
-
     ;; Cube dimensions
     dims = size(cube, /dimensions)
 
@@ -32,6 +29,8 @@ pro bp3_cc, cube, refs=refs, threshold=threshold, algorithm=algorithm, $
     cc_cube = fltarr( dims[0], dims[1], num_refs)
     tt_cube = fltarr( dims[0], dims[1], num_refs)
 
+    resolve_routine, "bp4_alg", /either
+
 
     ;; Calculate timelag for each reference point
     for i = 0, num_refs-1 do begin
@@ -41,9 +40,8 @@ pro bp3_cc, cube, refs=refs, threshold=threshold, algorithm=algorithm, $
         x0 = refs[0,i]
         y0 = refs[1,i]
 
-        case algorithm of
 
-        0 : begin
+        if not keyword_set(algorithm) then begin
             for x = 0, dims[0]-1 do begin
                 for y = 0, dims[1]-1 do begin
                     timelag, cube[x0, y0, *], cube[x, y, *], tau, maxcor
@@ -51,29 +49,33 @@ pro bp3_cc, cube, refs=refs, threshold=threshold, algorithm=algorithm, $
                     tt_cube[x, y, i] = maxcor[0]
                 endfor
             endfor
-        end
-
-        1 : begin
-            BP_ALG, cube, x0, y0, threshold, cc_square, tt_square
+        endif else begin
+            BP4_ALG, cube, x0, y0, tau, threshold, cc_square, tt_square
             cc_cube[*,*,i] = cc_square
             tt_cube[*,*,i] = tt_square
-        end
+        endelse
 
-        endcase
 
     endfor
 
 
 end
 
-; Extra locations to calculate cc
-refs = [[50,50],[49,50],[51,50],[50,49],[50,51],[49,49],[51,49],[49,51],[51,51]]
+
+;    d = cube[*,*,0]
+;   if not keyword_set(refs) then $
+;        refs = reform( array_indices(d, where(d eq max(d))), 2, 1 )
+
 threshold = 0.5 ;; not needed without running algorithm
+x0 = 50 & y0 = 50 & s = 1
+map = intarr(100,100)
+map[ x0-s:x0+s, y0-s:y0+s ] = 1
+refs = array_indices( map, where(map eq 1) )
+
 
 for i = 0, n_elements(A)-1 do begin
-    BP3_CC, A[i].data, algorithm=0, cc_cube, tt_cube 
-    save, cc_cube, filename="bp1_" + A[i].wavelength + "_cc_05.sav"
-    save, tt_cube, filename="bp1_" + A[i].wavelength + "_tt_05.sav"
+    BP3_CC, A[i].data, refs=refs, algorithm=1, threshold=0.5, cc, tt
+    save, cc, tt, filename="bp1_" + A[i].wavelength + "_cc_center_9refs_alg.sav"
 endfor
 
 end

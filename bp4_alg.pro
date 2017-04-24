@@ -3,12 +3,13 @@
 ; Description:          run timelag.pro with algorithm or without
 
 
-pro BP_ALG, cube, x0, y0, threshold, cc_square, tt_square
+pro BP4_ALG, cube, x0, y0, tau, threshold, cc_square, tt_square
 
 
         dims = size(cube, /dimensions)
+
         map = intarr( dims[0], dims[1] )
-        map[x0,y0] = 75
+        map[x0,y0] = 1
         map[x0, y0-1] = 1
         map[x0, y0+1] = 1
         map[x0-1, y0] = 1
@@ -18,7 +19,6 @@ pro BP_ALG, cube, x0, y0, threshold, cc_square, tt_square
         tt_square = fltarr( dims[0], dims[1] )
 
         ind_1D = where( map eq 1 )
-
 
         ;; Run timelag on (x0,y0) until no more locations are left.
         while 1 do begin
