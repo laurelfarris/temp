@@ -1,3 +1,10 @@
+;; Portions of codes that I didn't end up using, but may want to
+;;   in the future...
+
+
+
+
+
     ;; Create error handler to close window if an error occurs
     catch, error_status
     if error_status ne 0 then begin

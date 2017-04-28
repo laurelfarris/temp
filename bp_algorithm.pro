@@ -3,7 +3,7 @@
 ; Description:          run timelag.pro with algorithm or without
 
 
-pro BP4_ALG, cube, x0, y0, tau, threshold, cc_square, tt_square
+pro BP_ALGORITHM, cube, x0, y0, tau, threshold, cc_square, tt_square
 
 
         dims = size(cube, /dimensions)

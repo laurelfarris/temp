@@ -11,12 +11,14 @@ pro my_image, data, props, cbar_props=cbar_props, rows=rows, del=del
     n = n_elements(data[0,0,*]) ;; alternative to size, which gives error for 2D data
     im = objarr(n)
     cols = n/rows
-    ;MY_WINDOW, 700, 810, del=del
+    MY_WINDOW, 700, 810, del=del
 
     for i=0, n-1 do begin
 
         ;; Temporary... plots publications never have titles.
         ;props.title = "$\lambda$="+A[i].wavelength+" $\AA$; log(T)="+A[i].temperature+"K"
+
+;        props.max_value = max(data[*,*,i])
 
         im[i] = image( data[*,*,i], $
             layout = [cols, rows,i+1], $
